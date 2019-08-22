@@ -20,6 +20,7 @@ Make sure you have [Node JS](https://nodejs.org/en/ "") installed. Then run the 
 ```console
 foo@bar:~$ cd PATH/TO/PROJECT/desktop-client
 foo@bar:~$ npm install
+// Note a better method may be to use 'yarn' instead of 'npm install' if you can set it up...
 ```
 
 ### Running the app

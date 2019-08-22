@@ -20,13 +20,14 @@ Make sure you have [Node JS](https://nodejs.org/en/ "") installed. Then run the 
 ```console
 foo@bar:~$ cd PATH/TO/PROJECT/desktop-client
 foo@bar:~$ npm install
-// Note a better method may be to use 'yarn' instead of 'npm install' if you can set it up...
+// A better method may be to use 'yarn' instead of 'npm install' if you can set it up...
 ```
 
 ### Running the app
 
 After you have installed all the required dependancies using 'npm install' open up a terminal in the desktop-client directory then run
 ```console
+// If you were able to install 'yarn' than you can replace 'npm' with it in all these commands.
 foo@bar:~$ npm run rebuild
 ```
 

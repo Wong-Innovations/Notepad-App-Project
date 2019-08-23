@@ -21,38 +21,31 @@ import SaveAltIcon from '@material-ui/icons/SaveAltOutlined'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import * as actionTypes from '../../store/actions';
+import { connect } from 'react-redux';
+import fakeData from '../../fakedata';
 
-const fakeData = {
-  folders: [
-    {
-      name: "My Folder",
-      contents: [
-        {
-          name: "Passwords & Secrets",
-          value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam dictum rutrum ante vel euismod. Integer dapibus velit non sagittis fringilla. Aenean cursus risus malesuada, consequat nisi vel, posuere lectus. In ut augue a augue eleifend elementum quis ut eros."
-        },
-        {
-          name: "Another Note",
-          value: "Praesent magna nulla, tempor id arcu eu, scelerisque ultricies orci. Donec odio nulla, tincidunt a vehicula ut, interdum a turpis. Suspendisse auctor eu nulla quis imperdiet."
-        }
-      ]
-    },
-    //...
-    {
-      name: "Misc",
-      contents: [
-        {
-          name: "A Misc Note",
-          value: "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed sit amet metus sed urna commodo sollicitudin. Quisque tincidunt nulla purus."
-        },
-        {
-          name: "Feynman's Lectures",
-          value: "This two-year course in physics is presented from the point of view that you, the reader, are going to be a physicist. This is not necessarily the case of course, but that is what every professor in every subject assumes!"
-        }
-      ]
-    }
-  ]
-};
+const mapStateToProps = state => {
+  return {
+    mobileOpen: state.mobileOpen,
+    foldersOpen: state.foldersOpen
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleMobileOpen: () => dispatch({
+      type: actionTypes.CHANGE_MOBILE_OPEN
+    }),
+    handleFolderOpen: (index) => dispatch({
+      type: actionTypes.CHANGE_FOLDER_OPEN,
+      index: index
+    }),
+    handleNewFolder: () => dispatch({
+      type: actionTypes.ADD_FOLDER_TO_DRAWER
+    }),
+  }
+}
 
 const drawerWidth = 240;
 
@@ -105,16 +98,6 @@ function ResponsiveDrawer(props) {
   const { container } = props;
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-
-  function handleClick() {
-    setOpen(!open);
-  }
-
-  function handleDrawerToggle() {
-    setMobileOpen(!mobileOpen);
-  }
 
   const drawer = (
     <div>
@@ -133,15 +116,15 @@ function ResponsiveDrawer(props) {
       <List
         component="nav"
       >
-        {fakeData.folders.map((folder) => {
+        {fakeData.folders.map((folder, index) => {
         if (folder.name !== "Misc") {
           return (
             <div>
-            <ListItem button onClick={handleClick}>
+            <ListItem button onClick={() => props.handleFolderOpen(index)}>
               <ListItemText primary={folder.name} />
-              {open ? <ExpandLess /> : <ExpandMore />}
+              {props.foldersOpen[index] ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Collapse in={props.foldersOpen[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {folder.contents.map((note) => {
                   return (
@@ -181,7 +164,7 @@ function ResponsiveDrawer(props) {
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={handleDrawerToggle}
+            onClick={props.handleMobileOpen}
             className={classes.menuButton}
           >
             <MenuIcon />
@@ -201,8 +184,8 @@ function ResponsiveDrawer(props) {
             container={container}
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
+            open={props.mobileOpen}
+            onClose={props.handleMobileOpen}
             classes={{
               paper: classes.drawerPaper,
             }}
@@ -243,4 +226,4 @@ ResponsiveDrawer.propTypes = {
   container: PropTypes.instanceOf(typeof Element === 'undefined' ? Object : Element),
 };
 
-export default ResponsiveDrawer;
+export default connect(mapStateToProps, mapDispatchToProps)(ResponsiveDrawer);

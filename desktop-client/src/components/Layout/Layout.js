@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/AddOutlined'
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolderOutlined';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Collapse from '@material-ui/core/Collapse';
 import MenuIcon from '@material-ui/icons/Menu';
 import SaveIcon from '@material-ui/icons/SaveOutlined'
@@ -47,14 +47,14 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
     },
     minHeight: '64px'
@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
@@ -102,17 +102,17 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar}>
-        <Button color="inherit" className={classes.drawerIcon}>
+        <IconButton color="inherit" className={classes.drawerIcon}>
           <AddIcon fontSize="large" />
-        </Button>
-        <Button color="inherit" className={classes.drawerIcon}>
+        </IconButton>
+        <IconButton color="inherit" className={classes.drawerIcon}>
           <CreateNewFolderIcon fontSize="large" />
-        </Button>
-        <Button color="inherit" className={classes.drawerIcon}>
+        </IconButton>
+        <IconButton color="inherit" className={classes.drawerIcon}>
           <SaveAltIcon fontSize="large" />
-        </Button>
+        </IconButton>
+        <Divider />
       </div>
-      <Divider />
       <List
         component="nav"
       >
@@ -151,6 +151,14 @@ function ResponsiveDrawer(props) {
           )
         }
       })}
+        <ListItem button>
+          <ListItemText
+            primary="New Note"
+          />
+          <ListItemSecondaryAction>
+            <AddIcon />
+          </ListItemSecondaryAction>
+        </ListItem>
       </List>
     </div>
   );
@@ -172,14 +180,14 @@ function ResponsiveDrawer(props) {
           <Typography className={classes.title} variant="h6" noWrap>
             Notepad
           </Typography>
-          <Button color="inherit">
+          <IconButton color="inherit">
             <SaveIcon fontSize="large" />
-          </Button>
+          </IconButton>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
+        <Hidden mdUp implementation="css">
           <Drawer
             container={container}
             variant="temporary"
@@ -196,7 +204,7 @@ function ResponsiveDrawer(props) {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden smDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,
